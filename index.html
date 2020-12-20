@@ -1,0 +1,119 @@
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <script>
+        window.onbeforeunload = function () { return "WARNING: progress will be lost if you navigate away"; };
+    </script>
+    <link rel='stylesheet' type="text/css" href="style.css">
+    <script type="text/javascript" src="control.js"></script>
+</head>
+
+<body>
+<b>Rate how you feel each word matches the mood of the speaker</b><br/>
+<!-- <ul>
+    <li>
+        Interested <span><input type="radio" id="male" name="interested" > <input type="radio" id="male" name="interested" > <input type="radio" id="male" name="interested" > </span>
+    </li>
+    <li>
+        Distressed
+    </li>
+    <li>
+        Excited
+    </li>
+</ul> -->
+
+<table class="tg">
+
+    <thead>
+        <tr>
+            <th>Word</th>
+            <th>Rating</th>
+        </tr>
+    </thead>
+    <tbody id = "wordRating">
+
+        <tr class="parentTable">
+            <td>Distressed</td>
+            <td>
+                <table>
+                    <colgroup>
+                        <col style="width: 80px">
+                        <col style="width: 80px">
+                        <col style="width: 80px">
+                        <col style="width: 80px">
+                        <col style="width: 80px">
+                    </colgroup>
+                    <tr>
+                        <td>
+                            <i>strong mismatch</i>
+                        </td>
+                        <td>
+                
+                        </td>
+                        <td>
+                
+                        </td>
+                        <td>
+                
+                        </td>
+                        <td>
+                            <i>strong match</i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" name="distressed" value="1" />
+                        </td>
+                        <td>
+                            <input type="radio" name="distressed" value="2" />
+                        </td>
+                        <td>
+                            <input type="radio" name="distressed" value="3" />
+                        </td>
+                        <td>
+                            <input type="radio" name="distressed" value="4" />
+                        </td>
+                        <td>
+                            <input type="radio" name="distressed" value="5" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr class="parentTable">
+            <td>Excited</td>
+            <td>R</td>
+        </tr>
+        <tr class="parentTable">
+            <td>Upset</td>
+            <td>R</td>
+        </tr>
+        <tr class="parentTable"> 
+            <td>Strong</td>
+            <td>R</td>
+        </tr>
+        <tr class="parentTable">
+            <td>Guilty</td>
+            <td>R</td>
+        </tr>
+        <tr class="parentTable">
+            <td>Scared</td>
+            <td>R</td>
+        </tr>
+        <tr class="parentTable">
+            <td>Hostile</td>
+            <td>R</td>
+        </tr>
+        <tr class="parentTable">
+            <td>Enthisiastic</td>
+            <td>R</td>
+        </tr>
+        <tr class="parentTable">
+            <td>Proud</td>
+            <td>R</td>
+        </tr>
+    </tbody>
+</table>
+
+<button type="button" onclick="getCheckedValue('interested')"> Validate</button>
+</body>

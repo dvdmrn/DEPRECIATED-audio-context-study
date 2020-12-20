@@ -1,0 +1,15 @@
+table {
+  border-collapse: collapse;
+  width: 800px;
+}
+
+th, td {
+  text-align: center;
+  padding: 10px;
+}
+
+.parentTable:nth-child(even) {background-color: #f2f2f2;}
+
+.emph{
+    font-weight: bold;
+}
