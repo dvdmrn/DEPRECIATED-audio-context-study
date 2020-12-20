@@ -1,7 +1,11 @@
 import logo from './logo.svg';
 import './style.css';
+import ReactPlayer from 'react-player'
+import React, { Component } from 'react';
 
-let getRadioValues = function (arrOfIDs) {
+var pData = []
+
+let getRadioValues = function (arrOfIDs, youShallNotPass) {
   let ratings = {}
   arrOfIDs.forEach(name_id => {    
     let radios = document.getElementsByName(name_id);
@@ -11,58 +15,108 @@ let getRadioValues = function (arrOfIDs) {
         // only one radio can be logically checked, don't check the rest
         break;
       }
-      if(i==4){
+      if(i==4 && youShallNotPass){
         alert(`Incomplete ratings --- \nThe field: '${name_id}' has not been filled in.`)
+        ratings = false
       }
     }
   });
-
-  console.log(ratings)
+  return ratings;
 }
 
-let validateFields = function() {
+let clearRadioValues = function(arrOfIDs){
+  arrOfIDs.forEach(name_id => {
+    let ele = document.getElementsByName(name_id);
+    for (var i = 0; i < ele.length; i++)
+      ele[i].checked = false;
+  })
+
+}
+
+let downloadData = function(){
+  var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(pData));
+}
+
+class App extends Component{
+  constructor(props){
+    super(props);
+    this.youShallNotPass = true // if true will prevent users from proceeding unless they've filled everything in
+    this.surveyParams = {emotionWords: ["Interested",
+                        "Distressed",
+                        "Excited",
+                        "Upset",
+                        "Strong",
+                        "Guilty",
+                        "Scared",
+                        "Hostile",
+                        "Enthusiastic",
+                        "Proud"],
+                        personalityDifferential: [
+                        ["Extraverted", "enthusiastic"],
+                        ["Critical", "quarrelsome"],
+                        ["Dependable", "self-disciplined"],
+                        ["Anxious", "easily upset"],
+                        ["Open to new experiences", "complex"],
+                        ["Reserved", "quiet"],
+                        ["Sympathetic", "warm"],
+                        ["Disorganized", "careless"],
+                        ["Calm", "emotionally stable"],
+                        ["Conventional", "uncreative"]
+                        ]
+                      }
+    this.videoPlaylist = ["v1.mp4", "v2.mp4", "v3.mp4",]
+    this.state = {videoIndex:0}
+    
+  }
+
+  nextVideo = function (fieldNames) {
+    // get radio button vals
+    // purge radio buttons
+    let responseBlock = {PID:420, 
+                        VID:this.videoPlaylist[this.state.videoIndex]
+                        }
+
+    for(const fieldBlock in fieldNames){
+      let radioVals = getRadioValues(fieldNames[fieldBlock], this.youShallNotPass);
+      console.log(radioVals)
+      if(! radioVals){
+        return;
+      }
+      clearRadioValues(fieldNames[fieldBlock]);
+      responseBlock[fieldBlock] = radioVals;
+    }
+   
+    let targetElement = document.getElementById("videoPlayer");
+    targetElement.scrollIntoView({ block: "start", behavior: "smooth" });
+    pData.push(responseBlock);
+    console.log("logged trial");
+    console.log(pData);
+    this.setState({videoIndex:this.state.videoIndex+1})
+
+  }
+
+
+  render(){
+    return (
+      <div className="App">
   
-}
+        <VideoPlayer currentVideo={this.videoPlaylist[this.state.videoIndex]}/>
+        <p/>
+        {/* <RatingBox word="hi"/> */}
+        <b>Rate how you feel each word matches the mood of the speaker</b><br />
+        <p/>
+        <ParentTable2Col words={this.surveyParams.emotionWords} startLabel={"strong mismatch"} endLabel = {"strong match"}/>
+  
+        <p/>
+        <b>Personality assessment</b><br/>
+        <i>I see the speaker as:</i><br/>
+        <PureSemanticDifferential words={this.surveyParams.emotionWords} differentials={this.surveyParams.personalityDifferential} />
+        <button onClick={e => this.nextVideo(this.surveyParams)}> next video </button>
+        <a href={" data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(pData))} download="pdata.json">download data</a>
+      </div>
+    );
 
-function App() {
-
-  let emotionWords = ["Interested",
-                      "Distressed",
-                      "Excited",
-                      "Upset",
-                      "Strong",
-                      "Guilty",
-                      "Scared",
-                      "Hostile",
-                      "Enthusiastic",
-                      "Proud"]
-
-  let personalityDifferential = [
-                      ["Extraverted", "enthusiastic"],
-                      ["Critical", "quarrelsome"],
-                      ["Dependable", "self-disciplined"],
-                      ["Anxious", "easily upset"],
-                      ["Open to new experiences", "complex"],
-                      ["Reserved", "quiet"],
-                      ["Sympathetic", "warm"],
-                      ["Disorganized", "careless"],
-                      ["Calm", "emotionally stable"],
-                      ["Conventional", "uncreative"]
-                      ]
-  return (
-    <div className="App">
-      {/* <RatingBox word="hi"/> */}
-      <b>Rate how you feel each word matches the mood of the speaker</b><br />
-      <p/>
-      <ParentTable2Col words={emotionWords} startLabel={"strong mismatch"} endLabel = {"strong match"}/>
-
-      <p/>
-      <b>Personality assessment</b><br/>
-      <i>I see the speaker as:</i><br/>
-      <PureSemanticDifferential words={emotionWords} differentials={personalityDifferential} />
-    <button onClick={e=>getRadioValues(emotionWords)}> validate me daddy</button>
-    </div>
-  );
+  }
 }
 
 function ParentTable2Col(props){
@@ -134,7 +188,18 @@ function SemanticDifferentialBox (props) {
   )
 }
 
+function VideoPlayer(props){
+  return (
+    <div className='player-wrapper' id="videoPlayer">
+      <ReactPlayer
+        className='react-player fixed-bottom'
+        url={'videos/'+props.currentVideo}
+        controls={true}
 
+      />
+    </div>
+  )
+}
 
 
 export default App;

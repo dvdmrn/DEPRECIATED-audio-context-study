@@ -13,3 +13,8 @@ th, td {
 .emph{
     font-weight: bold;
 }
+
+input[type=radio]{
+  height:20px;
+  width:20px;
+}
