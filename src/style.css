@@ -8,7 +8,7 @@ th, td {
   padding: 10px;
 }
 
-.parentTable:nth-child(even) {background-color: #f2f2f2;}
+.parentTable:nth-child(even) {background-color: #3b3a3a;}
 
 .emph{
     font-weight: bold;
@@ -17,4 +17,54 @@ th, td {
 input[type=radio]{
   height:20px;
   width:20px;
+}
+
+.messageScreen{
+  background-color: rgb(75, 53, 95);
+  color: rgb(255, 215, 253);
+  display: block;
+  /* justify-content: center; */
+  padding: 40px;
+  border-radius: 30px;
+  text-align: center;
+}
+
+.center{
+  margin:0 auto;
+  width: 50%;
+}
+
+.leftList{
+  text-align: left;
+}
+
+body{
+  background-color: rgb(33, 32, 34);
+  color: #c9c9c9;
+  margin:30px;
+}
+
+button{
+  background-color: #a172fa; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 30px;
+  transition-duration: 0.4s;
+}
+button:hover{
+  background-color: #6837c4; /* Green */
+}
+
+
+.textInput{
+  background-color: rgba(255,255,255,0.5);
+  padding:10px;
+  border-color: black;
+  color:#fff;
+  width:500px;
 }

@@ -1,0 +1,17 @@
+[
+  {
+    "fileName": "v1.mp4",
+    "audio": true,
+    "viz": false
+  },
+  {
+    "fileName": "v2.mp4",
+    "audio": true,
+    "viz": false
+  },
+  {
+    "fileName": "v3.mp4",
+    "audio": true,
+    "viz": false
+  }
+]

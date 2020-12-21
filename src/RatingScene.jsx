@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './style.css';
 import ReactPlayer from 'react-player'
 import React, { Component } from 'react';
@@ -47,7 +46,7 @@ let downloadData = function(){
   var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(pData));
 }
 
-class App extends Component{
+class RatingScene extends Component{
   constructor(props){
     super(props);
     this.youShallNotPass = false // if true will prevent users from proceeding unless they've filled everything in
@@ -75,7 +74,8 @@ class App extends Component{
                         ]
                       }
     this.state = {videoIndex:0,
-                  playList:[]}
+                  playList:[],
+                  controlSequence:[]}
     
   }
 
@@ -83,9 +83,12 @@ class App extends Component{
     // get radio button vals
     // purge radio buttons
     let responseBlock = {PID:420, 
-                        VID:this.state.playList[this.state.videoIndex]
+                        VID:this.state.playList[this.state.videoIndex],
+                        condition:{"audio":this.state.controlSequence[this.state.videoIndex].audio,
+                                   "viz": this.state.controlSequence[this.state.videoIndex].audio
+                                  }
                         }
-
+    
     for(const fieldBlock in fieldNames){
       let radioVals = getRadioValues(fieldNames[fieldBlock], this.youShallNotPass);
       console.log(radioVals)
@@ -101,13 +104,27 @@ class App extends Component{
     pData.push(responseBlock);
     console.log("logged trial");
     console.log(pData);
-    this.setState({videoIndex:this.state.videoIndex+1})
+
+    if(this.state.videoIndex == this.state.playList.length-1){
+        alert("end of playlist, you will now be prompted with a download link of your data. It's a small text file. Please download it so you can forward it to me after the study.")
+        let a = document.getElementById('downloadData');
+        a.href = " data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(pData));
+        a.click();
+
+        this.props.nextSceneCallback();
+    }
+    else{
+        this.setState({videoIndex:this.state.videoIndex+1})
+    }
+
 
   }
   componentDidMount(){
     console.log("mounted");
     let shuffledPlaylist = helpers.shuffle(videos);
-    this.setState({ playList: shuffledPlaylist.map(e => e.fileName)})
+    
+    this.setState({ playList: shuffledPlaylist.map(e => e.fileName),
+                    controlSequence: shuffledPlaylist})
     console.log(shuffledPlaylist);
     
   }
@@ -128,7 +145,7 @@ class App extends Component{
         <i>I see the speaker as:</i><br/>
         <PureSemanticDifferential words={this.surveyParams.emotionWords} differentials={this.surveyParams.personalityDifferential} />
         <button onClick={e => this.nextVideo(this.surveyParams)}> next video </button>
-        <a href={" data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(pData))} download="pdata.json">download data</a>
+        <a href={" data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(pData))} download="pdata.json" id="downloadData">download data</a>
       </div>
     );
 
@@ -218,4 +235,4 @@ function VideoPlayer(props){
 }
 
 
-export default App;
+export default RatingScene;
