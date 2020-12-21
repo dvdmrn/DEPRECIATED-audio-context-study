@@ -73,10 +73,18 @@ class LearningScene extends Component{
     }
     else{
         this.setState({videoIndex:this.state.videoIndex+1})
-    }
-
-
+    }   
   }
+
+
+      onEnterPress = (e) => {
+        console.log("in on enter press: ",e)
+          if (e.code == "Enter" && e.shiftKey == false) {
+            console.log("key press event");
+            e.preventDefault();
+            document.getElementById("submitButton").click()
+          }
+        }
   componentDidMount(){
     console.log("mounted");
     let shuffledPlaylist = helpers.shuffle(videos);    
@@ -92,11 +100,20 @@ class LearningScene extends Component{
         <p/>
         {/* <RatingBox word="hi"/> */}
         <b>Describe what the speaker is talking about in a sentence</b><p />
-        <input id="videoDescription" type="text" className="textInput"/><p />
-        <button onClick={e=>this.nextVideo()}>submit</button> 
-            <a href={" data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(pData))} 
-               download="pdata.json" 
-               id="downloadB1Data">download data</a>
+     
+          {/* !!! */}
+          <input id="videoDescription" type="text" className="textInput" onKeyPress={this.onEnterPress}/><p />
+          <button 
+            type="submit"
+            id="submitButton"
+            onClick={e => this.nextVideo()}>
+            submit
+          </button>
+
+        
+        <a href={" data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(pData))} 
+            download="pdata.json" 
+            id="downloadB1Data">download data</a>
     </div>
        
     );
